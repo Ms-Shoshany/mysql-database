@@ -1,0 +1,11 @@
+LICENCE
+README.md
+setup.py
+mysql_database/__init__.py
+mysql_database/database.py
+mysql_database/db_connector.py
+mysql_database.egg-info/PKG-INFO
+mysql_database.egg-info/SOURCES.txt
+mysql_database.egg-info/dependency_links.txt
+mysql_database.egg-info/requires.txt
+mysql_database.egg-info/top_level.txt
