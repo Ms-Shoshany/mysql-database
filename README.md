@@ -44,7 +44,7 @@ to use FOREIGN KEY create an INT column <foreign_table>_id:
 ## 🚀 Usage Example
 
 ```python
-from easy_mysql import Database, DatabaseCreds
+from mysql_database import Database, DatabaseCreds
 
 # Define credentials
 creds = DatabaseCreds(
