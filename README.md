@@ -4,8 +4,7 @@
 A lightweight and dynamic wrapper around `mysql.connector` to simplify MySQL database interactions with schema-driven table creation, automatic connection handling, and Python object mapping.
 
 ---
-pip install easy-mysql
-
+pip install mysql-database
 ---
 
 ## 📁 Project Structure
