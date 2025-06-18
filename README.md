@@ -88,7 +88,7 @@ db.delete_object("users", user_id)
 db.get_filtered_list_of_objects(
     object_type="users",
     filter="alice",
-    include_columns=["name", "email"]
+    include_columns=['name', 'email']
     as_dict=True
 )
 ```

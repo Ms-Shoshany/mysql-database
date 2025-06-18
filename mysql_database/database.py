@@ -24,57 +24,57 @@ class Database:
         with DBConnector(self.creds, self.name) as db:
             db.create_tables_if_doest_exist(self.schemas)
 
-    def add_object(self, tabl_name, data):
+    def add_object(self, table_name, data):
         with DBConnector(self.creds, self.name) as db:
-            id = db.write_row(tabl_name, data)
+            id = db.write_row(table_name, data)
             return id
 
-    def get_list_of_objects(self, tabl_name, conditions={}, as_dict=False):
+    def get_list_of_objects(self, table_name, conditions={}, as_dict=False):
         objs = []
         with DBConnector(self.creds, self.name) as db:
-            rows = db.get_rows(tabl_name, conditions)
+            rows = db.get_rows(table_name, conditions)
         if as_dict:
             return rows
-        command_str = self.create_class(tabl_name)
+        command_str = self.create_class(table_name)
         for row in rows:
-            exec(f"{command_str}\nobjs.append({tabl_name.title()}(row))")
+            exec(f"{command_str}\nobjs.append({table_name}(row))")
         return objs
     
-    def get_filtered_list_of_objects(self, tabl_name, filter="", include_columns=[], exclude_columns=[], conditions={}, as_dict=False):
+    def get_filtered_list_of_objects(self, table_name, filter="", include_columns=[], exclude_columns=[], conditions={}, as_dict=False):
         objs = []
         with DBConnector(self.creds, self.name) as db:
             if include_columns:
                 columns = include_columns
             else:
-                columns = db.get_tables_columns(tabl_name)
+                columns = db.get_tables_columns(table_name)
                 exclude_columns.append("id")
                 for column in exclude_columns:
                     if column in columns:
                         columns.remove(column)
-            rows = db.filter_table(tabl_name, columns, filter, conditions)
+            rows = db.filter_table(table_name, columns, filter, conditions)
         if as_dict:
             return rows
-        command_str = self.create_class(tabl_name)
+        command_str = self.create_class(table_name)
         for row in rows:
-            exec(f"{command_str}\nobjs.append({tabl_name.title()}(row))")
+            exec(f"{command_str}\nobjs.append({table_name.title()}(row))")
         return objs
 
-    def get_object_by_id(self, tabl_name, id, as_dict=False):
+    def get_object_by_id(self, table_name, id, as_dict=False):
         with DBConnector(self.creds, self.name) as db:
-            row = db.get_row(tabl_name, {"id": id})
+            row = db.get_row(table_name, {"id": id})
         if as_dict:
             return row
         if row:
-            return self.get_class(tabl_name, row)
+            return self.get_class(table_name, row)
         return row
     
-    def update_object(self, tabl_name, id, data):
+    def update_object(self, table_name, id, data):
         with DBConnector(self.creds, self.name) as db:
-            row = db.update_row(tabl_name, id, data)
+            row = db.update_row(table_name, id, data)
 
-    def delete_object(self, tabl_name, id):
+    def delete_object(self, table_name, id):
         with DBConnector(self.creds, self.name) as db:
-            row = db.delete_row(tabl_name, id)
+            row = db.delete_row(table_name, id)
 
 
     def create_class(self, class_name):
@@ -83,9 +83,9 @@ class Database:
         command_str += f"def __init__(self, data):\n\t\t"
         with open(f"{self.schemas}", 'r') as f:
             object_schema = json.loads(f.read())[class_name]
-        command_str += f"self.id = data[\"id\"]\n\t\t"
+        command_str += f"self.id = data[\'id\']\n\t\t"
         for attr in object_schema.keys():
-            command_str += f"self.{attr} = data[\"{attr}\"] if \"{attr}\" in data else None\n\t\t"
+            command_str += f"self.{attr} = data[\'{attr}\'] if \'{attr}\' in data else None\n\t\t"
         return command_str
         
 
